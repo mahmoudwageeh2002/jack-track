@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "707253597457",
+    "project_id": "jack-track01",
+    "storage_bucket": "jack-track01.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707253597457:android:0bb52c35201aea4eccc8b0",
+        "android_client_info": {
+          "package_name": "com.anonymous.jacktrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707253597457-108dfn7fkimfovdfuq4si29tev60oe4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.anonymous.jacktrack",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "707253597457-go2gevi3ejvqc30esu8vkb4jcr81fq4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0NKaIYXvGa3W-8aWEcGL_OqBRZNbUW_0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707253597457-go2gevi3ejvqc30esu8vkb4jcr81fq4p.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "707253597457-ij2bl9ejrj91l1cj405fhfmc5qtdrn0c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.anonymous.jacktrack"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
