@@ -4,19 +4,18 @@
     "slug": "jack-track",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/brand/jack-track-logo.png",
+    "icon": "./icon.png",
     "scheme": "jacktrack",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon",
+      "icon": "./icon.png",
       "bundleIdentifier": "com.anonymous.jacktrack",
       "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#D8F9DD",
-        "foregroundImage": "./assets/brand/jack-track-logo.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./icon.png"
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.jacktrack",
@@ -24,19 +23,20 @@
     },
     "web": {
       "output": "static",
-      "favicon": "./assets/brand/jack-track-logo.png"
+      "favicon": "./icon.png"
     },
     "plugins": [
       "expo-router",
+      "./plugins/with-png-app-icon",
       [
         "expo-splash-screen",
         {
           "backgroundColor": "#F8FBF9",
-          "image": "./assets/brand/jack-track-logo.png",
+          "image": "./icon.png",
           "imageWidth": 160,
           "dark": {
             "backgroundColor": "#071A17",
-            "image": "./assets/brand/jack-track-logo.png"
+            "image": "./icon.png"
           }
         }
       ]

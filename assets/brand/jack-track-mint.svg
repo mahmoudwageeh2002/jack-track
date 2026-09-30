@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1280 1280" fill="none">
+  <title>Jack Track — mint JT fitness icon</title>
+  <desc>Editable vector recreation with a gray-to-green J, a small green dash, and a dumbbell T. Transparent outside the mint rounded square.</desc>
+  <defs>
+    <linearGradient id="base" x1="630" y1="219" x2="630" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#DBFCD3"/>
+      <stop offset=".12" stop-color="#F0FCEF"/>
+      <stop offset=".52" stop-color="#CEFBDD"/>
+      <stop offset="1" stop-color="#009779"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientTransform="translate(560 376) rotate(67) scale(591 647)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity=".64"/>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wave" x1="560" y1="706" x2="735" y2="1040" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9AEBBF"/>
+      <stop offset=".43" stop-color="#60CFAC"/>
+      <stop offset="1" stop-color="#009578"/>
+    </linearGradient>
+    <linearGradient id="j" x1="557" y1="481" x2="450" y2="819" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00D83F"/>
+      <stop offset=".30" stop-color="#00B958"/>
+      <stop offset=".64" stop-color="#0B7055"/>
+      <stop offset="1" stop-color="#163B35"/>
+    </linearGradient>
+    <radialGradient id="gray" cx="0" cy="0" r="1" gradientTransform="translate(342 679) rotate(31) scale(234 236)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#62696B" stop-opacity=".87"/>
+      <stop offset="1" stop-color="#536362" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="dash" x1="563" y1="412" x2="537" y2="470" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00D539"/>
+      <stop offset=".46" stop-color="#00C548"/>
+      <stop offset="1" stop-color="#087957"/>
+    </linearGradient>
+    <linearGradient id="dark" x1="649" y1="452" x2="838" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#20453E"/>
+      <stop offset=".5" stop-color="#0A3C31"/>
+      <stop offset="1" stop-color="#002E25"/>
+    </linearGradient>
+    <clipPath id="tile"><rect x="219" y="219" width="815" height="805" rx="218"/></clipPath>
+    <path id="j-shape" d="M496 523C496 505 507 491 525 487L578 477C587 475 594 481 594 491V722C594 790 540 837 469 837C396 837 342 791 342 724V673C342 664 347 660 357 659L414 654C424 653 430 659 430 668V720C430 744 443 756 464 756C484 756 496 742 496 721Z"/>
+  </defs>
+  <g id="mint-tile" clip-path="url(#tile)">
+    <rect x="219" y="219" width="815" height="805" rx="218" fill="url(#base)"/>
+    <rect x="219" y="219" width="815" height="805" rx="218" fill="url(#glow)"/>
+    <path d="M219 659C471 742 748 738 1034 656V1024H219Z" fill="url(#wave)"/>
+  </g>
+  <g id="letter-j">
+    <use xlink:href="#j-shape" fill="url(#j)"/>
+    <use xlink:href="#j-shape" fill="url(#gray)"/>
+    <path id="j-dash" d="M518 422L597 405C605 403 610 408 608 416L600 442C599 447 596 451 590 452L510 467C501 469 496 465 497 456L501 439C504 430 509 425 518 422Z" fill="url(#dash)"/>
+  </g>
+  <g id="dumbbell-t" fill="url(#dark)" stroke="#062D26" stroke-width="1.5" stroke-linejoin="round">
+    <rect x="614" y="485" width="43" height="58" rx="10"/>
+    <rect x="902" y="485" width="41" height="58" rx="10"/>
+    <rect x="635" y="445" width="53" height="132" rx="15"/>
+    <rect x="869" y="445" width="53" height="132" rx="15"/>
+    <path d="M707 486H849C856 486 860 490 860 497V532C860 539 856 543 849 543H833C828 543 826 545 826 550V810C826 817 822 821 815 821H740C733 821 729 817 729 810V550C729 545 727 543 722 543H707C700 543 696 539 696 532V497C696 490 700 486 707 486Z"/>
+  </g>
+</svg>
