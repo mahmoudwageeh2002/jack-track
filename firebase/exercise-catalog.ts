@@ -1,0 +1,45 @@
+import type { Exercise, Equipment, MuscleGroup } from '../src/features/exercises/domain/exercise';
+
+type Entry = [string, string, MuscleGroup, Equipment, string, string[]];
+const entries: Entry[] = [
+  ['barbell-bench-press', 'Barbell Bench Press', 'chest', 'barbell', 'A horizontal press for the chest, with support from the triceps and shoulders.', ['Plant your feet and keep your upper back on the bench.', 'Lower the bar toward your chest with control.', 'Press upward without bouncing the bar.']],
+  ['incline-dumbbell-press', 'Incline Dumbbell Press', 'chest', 'dumbbell', 'An incline press that emphasizes the upper chest.', ['Set the bench to a slight incline.', 'Lower the dumbbells beside your chest.', 'Press upward with controlled movement.']],
+  ['push-up', 'Push-up', 'chest', 'bodyweight', 'A bodyweight chest press that also involves the arms and core.', ['Place hands slightly wider than shoulders.', 'Keep your body in a straight line as you lower.', 'Push the floor away to return.']],
+  ['cable-fly', 'Cable Fly', 'chest', 'cable', 'A chest isolation movement using cable resistance.', ['Stand between the pulleys with a stable stance.', 'Bring your hands together with a slight elbow bend.', 'Return slowly without overstretching.']],
+  ['chest-press', 'Machine Chest Press', 'chest', 'machine', 'A supported pressing movement for the chest.', ['Adjust the seat so handles are at chest height.', 'Press forward without locking the elbows.', 'Return with control.']],
+  ['pull-up', 'Pull-up', 'back', 'bodyweight', 'A vertical pull for the upper back and lats.', ['Grip the bar and brace your torso.', 'Pull your elbows down as your chest rises.', 'Lower under control.']],
+  ['lat-pulldown', 'Lat Pulldown', 'back', 'cable', 'A vertical cable pull targeting the lats.', ['Sit with thighs secured under the pad.', 'Pull the bar toward your upper chest.', 'Return slowly without swinging.']],
+  ['barbell-row', 'Barbell Row', 'back', 'barbell', 'A hinged rowing movement for the upper and middle back.', ['Hinge at your hips with a stable torso.', 'Row the bar toward the lower ribs.', 'Lower the bar without changing your torso position.']],
+  ['seated-cable-row', 'Seated Cable Row', 'back', 'cable', 'A seated horizontal pull for the middle back.', ['Sit tall with a slight knee bend.', 'Pull the handle toward your torso.', 'Extend your arms with control.']],
+  ['dumbbell-row', 'One-arm Dumbbell Row', 'back', 'dumbbell', 'A single-arm row for the back with bench support.', ['Support one hand on a bench.', 'Pull the dumbbell toward your hip.', 'Lower slowly, then repeat on the other side.']],
+  ['barbell-squat', 'Barbell Squat', 'legs', 'barbell', 'A compound leg movement involving the quads and glutes.', ['Stand with the bar supported across your upper back.', 'Bend the hips and knees to a comfortable depth.', 'Drive through the feet to stand.']],
+  ['romanian-deadlift', 'Romanian Deadlift', 'legs', 'barbell', 'A hip hinge focusing on the hamstrings and glutes.', ['Hold the bar close to your thighs.', 'Push your hips back while keeping a slight knee bend.', 'Stand by extending your hips.']],
+  ['leg-press', 'Leg Press', 'legs', 'machine', 'A supported press for the quads and glutes.', ['Keep your back against the pad.', 'Lower the platform through a comfortable range.', 'Press away without locking the knees.']],
+  ['leg-curl', 'Leg Curl', 'legs', 'machine', 'A knee-flexion exercise for the hamstrings.', ['Align your knees with the machine pivot.', 'Curl the pad through a comfortable range.', 'Return slowly.']],
+  ['leg-extension', 'Leg Extension', 'legs', 'machine', 'A seated isolation exercise for the quadriceps.', ['Adjust the backrest and shin pad.', 'Extend your knees with control.', 'Lower slowly to the starting position.']],
+  ['dumbbell-lunge', 'Dumbbell Lunge', 'legs', 'dumbbell', 'A single-leg movement for the quads and glutes.', ['Hold dumbbells at your sides.', 'Step forward and bend both knees.', 'Push through the front foot to return, then switch sides.']],
+  ['calf-raise', 'Standing Calf Raise', 'legs', 'bodyweight', 'A heel-raising movement for the calves.', ['Stand upright with support for balance.', 'Rise onto the balls of your feet.', 'Lower your heels slowly.']],
+  ['overhead-press', 'Overhead Press', 'shoulders', 'barbell', 'A vertical press for the shoulders and triceps.', ['Hold the bar around shoulder height.', 'Brace your torso and press overhead.', 'Lower with control.']],
+  ['dumbbell-shoulder-press', 'Dumbbell Shoulder Press', 'shoulders', 'dumbbell', 'An overhead press with independent arm movement.', ['Sit with back support and weights at shoulder level.', 'Press upward without arching your back.', 'Return slowly.']],
+  ['lateral-raise', 'Lateral Raise', 'shoulders', 'dumbbell', 'A side raise emphasizing the lateral shoulders.', ['Hold light dumbbells at your sides.', 'Raise your arms toward shoulder height with soft elbows.', 'Lower without swinging.']],
+  ['reverse-fly', 'Reverse Fly', 'shoulders', 'dumbbell', 'A rear-shoulder movement performed from a hip hinge.', ['Hinge forward and keep your torso steady.', 'Raise your arms out to the sides.', 'Lower with control.']],
+  ['face-pull', 'Face Pull', 'shoulders', 'cable', 'A cable pull involving the rear shoulders and upper back.', ['Set a rope attachment around face height.', 'Pull toward your face with elbows out.', 'Return slowly without leaning back.']],
+  ['dumbbell-curl', 'Dumbbell Curl', 'biceps', 'dumbbell', 'A basic elbow-flexion movement for the biceps.', ['Keep your elbows close to your torso.', 'Curl the weights without swinging.', 'Lower slowly.']],
+  ['barbell-curl', 'Barbell Curl', 'biceps', 'barbell', 'A two-arm biceps curl with a barbell.', ['Hold the bar with an underhand grip.', 'Curl with elbows beside your body.', 'Lower under control.']],
+  ['hammer-curl', 'Hammer Curl', 'biceps', 'dumbbell', 'A neutral-grip curl for the upper arms and forearms.', ['Keep palms facing inward.', 'Curl the dumbbells while keeping elbows still.', 'Return slowly.']],
+  ['preacher-curl', 'Preacher Curl', 'biceps', 'machine', 'A supported curl that limits torso movement.', ['Rest your upper arms on the pad.', 'Curl through a comfortable range.', 'Lower slowly without forcing elbow extension.']],
+  ['triceps-pushdown', 'Triceps Pushdown', 'triceps', 'cable', 'A cable elbow-extension movement for the triceps.', ['Keep your elbows beside your torso.', 'Push the handle down until your arms extend.', 'Return without moving the upper arms.']],
+  ['overhead-triceps-extension', 'Overhead Triceps Extension', 'triceps', 'dumbbell', 'An overhead elbow extension for the triceps.', ['Hold a dumbbell overhead with both hands.', 'Bend your elbows to lower behind your head.', 'Extend upward with control.']],
+  ['close-grip-bench-press', 'Close-grip Bench Press', 'triceps', 'barbell', 'A pressing variation emphasizing the triceps.', ['Use a grip around shoulder width.', 'Lower the bar while keeping elbows close to your body.', 'Press upward with control.']],
+  ['triceps-dip', 'Triceps Dip', 'triceps', 'bodyweight', 'A supported bodyweight press using parallel bars.', ['Support yourself with straight arms.', 'Lower to a comfortable depth.', 'Press back up without bouncing.']],
+  ['crunch', 'Crunch', 'core', 'bodyweight', 'A short-range trunk curl for the abdominal muscles.', ['Lie on your back with knees bent.', 'Lift your shoulders gently from the floor.', 'Lower with control without pulling on your neck.']],
+  ['reverse-crunch', 'Reverse Crunch', 'core', 'bodyweight', 'An abdominal movement that curls the pelvis upward.', ['Lie on your back with knees bent.', 'Bring knees toward your chest and gently curl your hips.', 'Lower slowly without swinging.']],
+  ['hanging-knee-raise', 'Hanging Knee Raise', 'core', 'bodyweight', 'A hanging knee lift for the abdominal muscles.', ['Hang from a stable bar.', 'Raise your knees while keeping swinging to a minimum.', 'Lower with control.']],
+  ['cable-crunch', 'Cable Crunch', 'core', 'cable', 'A resisted abdominal curl using a cable rope.', ['Kneel holding the rope near your head.', 'Curl your torso while keeping hips steady.', 'Return slowly.']],
+  ['dead-bug', 'Dead Bug', 'core', 'bodyweight', 'A controlled opposite-arm and leg movement for core stability.', ['Lie on your back with arms raised and knees bent.', 'Extend one arm and the opposite leg.', 'Return and alternate sides while keeping your torso steady.']],
+];
+
+export const exerciseCatalog: Exercise[] = entries.map(([id, name, primaryMuscle, equipment, description, instructions]) => ({
+  id, name, primaryMuscle, secondaryMuscles: [], equipment, description, instructions,
+  createdAt: new Date(), createdBy: 'system', status: 'active',
+}));
