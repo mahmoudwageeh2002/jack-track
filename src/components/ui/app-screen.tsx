@@ -72,5 +72,3 @@ const styles = StyleSheet.create({
   },
   tabContent: { paddingBottom: 120 },
 });
-//
-//
