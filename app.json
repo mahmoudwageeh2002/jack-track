@@ -10,7 +10,11 @@
     "ios": {
       "icon": "./icon.png",
       "bundleIdentifier": "com.anonymous.jacktrack",
-      "googleServicesFile": "./GoogleService-Info.plist"
+      "googleServicesFile": "./GoogleService-Info.plist",
+      "infoPlist": {
+        "NSSupportsLiveActivities": true,
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -27,6 +31,32 @@
     },
     "plugins": [
       "expo-router",
+      [
+        "expo-widgets",
+        {
+          "widgets": [
+            {
+              "name": "JackTrackStreak",
+              "displayName": "Workout Streak",
+              "description": "Keep your momentum with your current streak and personal best.",
+              "ios": {
+                "supportedFamilies": [
+                  "systemSmall",
+                  "systemMedium"
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow Jack Track to access your photos so you can choose a profile picture.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
       "./plugins/with-png-app-icon",
       [
         "expo-splash-screen",
@@ -44,6 +74,29 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "build": {
+          "experimental": {
+            "ios": {
+              "appExtensions": [
+                {
+                  "targetName": "ExpoWidgetsTarget",
+                  "bundleIdentifier": "com.anonymous.jacktrack.ExpoWidgetsTarget",
+                  "entitlements": {
+                    "com.apple.security.application-groups": [
+                      "group.com.anonymous.jacktrack"
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        },
+        "projectId": "5a5b72d4-c15c-4819-a8dd-1633a94c296d"
+      }
     }
   }
 }

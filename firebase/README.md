@@ -33,15 +33,28 @@ The updated rules are required before custom-plan creation works. They allow use
 - users/{uid}.activePlanId: points to the user's selected copy.
 - users/{uid}/plans/{planId}: selected plan, including personal set counts.
 - users/{uid}/workoutSessions/{sessionId}: actual completed workouts and set results.
+- users/{uid}: displayName, photoURL (Cloudinary HTTPS URL), weightKg, heightCm, and updatedAt.
+- users/{uid}/progress/{entryId}: weightKg, heightCm, local day, recordedAt, kind="body", and updatedAt. Every new check-in gets a unique ID, including multiple entries on the same day. Retrying a failed save within the sheet reuses its ID. Legacy body-{YYYY-MM-DD} documents remain readable.
+- users/{uid}.streak: unique completion days, current and best streaks, total completed workouts, lastCompletedDay, and asOfDay. The current count is a snapshot for asOfDay; screens recalculate from dated workouts so a stale count never extends a streak.
 
 Creating a custom plan atomically saves the top-level plan, its selected copy, and the active pointer. Changing a selected plan's sets updates only the user's selected copy. Custom plans have one to seven training days with Monday=0 through Sunday=6; restDays fills the remaining weekdays. Legacy templates without weekdays rotate by completed session count.
 
 Streaks count consecutive calendar days with at least one completed workout, using the completion-day string captured in the user's local timezone. Multiple workouts in a day count as one streak day. Only completed sets contribute to training volume.
 
+Workout completion and its summary are saved in one transaction. The session ID is reused on retries so a timeout cannot double-count the workout. Reading existing workout history backfills summaries for older accounts. Measurements and their current user fields are saved atomically. Existing owner-only user/progress/workout rules cover these paths.
+
+Profile shows a paginated measurement history (newest first) and a graph with Weight/Height toggles based on all saved check-ins. Points are evenly spaced by check-in order so same-day entries stay distinct. Confirmed saves update both views immediately and refresh their Firestore queries. Previously overwritten daily measurements cannot be reconstructed; all new check-ins are preserved separately.
+
+## Profile photos
+
+Set EXPO_PUBLIC_CLOUDINARY_UPLOAD_PRESET in .env.local to an unsigned image upload preset for the configured Cloudinary cloud. Restart Expo after changing it. The app uploads selected photos to jack-track/avatars and stores the returned HTTPS URL in Firestore; local device URIs are never persisted. Restrict the preset to image formats and a 10 MB limit in Cloudinary. No Cloudinary API secret belongs in the app.
+
+The Expo ImagePicker config plugin supplies the photo-library permission message and disables unused camera/microphone permissions. Rebuild the native development app for native permission configuration changes. Test full, limited, and denied photo access on a physical device.
+
 ## Checks
 
 ```sh
-node --import tsx --test tests/training-flow.test.ts
+node --import tsx --test tests/*.test.ts
 npx expo lint
 npx tsc --noEmit
 ```
