@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { collection, doc } from 'firebase/firestore';
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-toast-message';
 
@@ -20,10 +20,19 @@ import { useAppTheme } from '@/hooks/use-app-theme';
 import type { PlanDay } from '../domain/plan';
 import { weekdays } from '../domain/schedule';
 import { useExercises } from '../hooks/use-plans';
+import { useOfflineState } from '@/features/offline/data/connectivity';
 
 const emptyDay = (index: number): PlanDay => ({ id: 'day-' + (index + 1), name: 'Day ' + (index + 1), order: index + 1, exercises: [] });
 
 export function CreatePlanScreen() {
+  const online = useOfflineState((state) => state.online);
+  useFocusEffect(useCallback(() => {
+    if (!online) {
+      useOfflineState.setState({ blockedAction: 'Creating a plan' });
+      if (router.canGoBack()) router.back();
+      else router.replace('/(tabs)');
+    }
+  }, [online]));
   const { colors } = useAppTheme();
   const user = useAppSelector((state) => state.auth.user);
   const client = useQueryClient();
@@ -69,6 +78,7 @@ export function CreatePlanScreen() {
     } finally { setSaving(false); }
   };
 
+  if (!online) return null;
   if (!user) return <AppScreen><AppText>Log in to build your workout plan.</AppText><GlassButton label="Log in" onPress={() => router.replace('/login')} /></AppScreen>;
   return <AppScreen>
     <View style={styles.header}><AppText variant="title" weight="bold" style={{ flex: 1 }}>Build your plan</AppText><GlassButton compact label="Close" variant="ghost" disabled={saving} onPress={() => Alert.alert('Leave this plan?', 'Your unsaved changes will be lost.', [{ text: 'Keep editing', style: 'cancel' }, { text: 'Leave', style: 'destructive', onPress: () => router.back() }])} /></View>

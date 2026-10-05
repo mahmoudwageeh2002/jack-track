@@ -1,3 +1,4 @@
+import { runOnlineAction } from '@/features/offline/data/connectivity';
 import { router } from 'expo-router';
 import { View } from 'react-native';
 
@@ -26,7 +27,7 @@ export function PlansScreen() {
     <LoadState loading={active.isLoading} error={active.error} retry={() => { void active.refetch(); }} />
     {active.data && <PlanCard plan={active.data} active />}
     {active.isSuccess && !active.data && <SurfaceCard tone="muted"><AppText color="muted">No plan selected yet. Create your own or choose one below.</AppText></SurfaceCard>}
-    <GlassButton label="Create my workout" onPress={() => router.push('/create-plan')} />
+    <GlassButton label="Create my workout" onPress={() => runOnlineAction('Creating a plan', () => router.push('/create-plan'))} />
     <AppText variant="subtitle" weight="bold">Other plans</AppText>
     <LoadState loading={official.isLoading || owned.isLoading} error={official.error || owned.error} retry={() => { void official.refetch(); void owned.refetch(); }} />
     <View style={{ gap: 14 }}>{available.map((plan) => <PlanCard key={plan.id} plan={plan} />)}</View>

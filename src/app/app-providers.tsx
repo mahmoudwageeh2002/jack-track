@@ -7,6 +7,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AppToast } from '@/components/feedback/app-toast';
 import { store } from '@/core/store';
 import { AuthStateSync } from '@/features/auth/components/auth-state-sync';
+import { StreakWidgetSync } from '@/features/widgets/components/streak-widget-sync';
+import { WorkoutLiveActivitySync } from '@/features/widgets/components/workout-live-activity-sync';
+import { OfflineCoordinator } from '@/features/offline/components/offline-coordinator';
 import { queryClient } from './query-client';
 
 export function AppProviders({ children }: PropsWithChildren) {
@@ -15,8 +18,11 @@ export function AppProviders({ children }: PropsWithChildren) {
       <ReduxProvider store={store}>
         <AuthStateSync />
         <QueryClientProvider client={queryClient}>
+          <StreakWidgetSync />
+          <WorkoutLiveActivitySync />
           <BottomSheetModalProvider>
             {children}
+            <OfflineCoordinator />
             <AppToast />
           </BottomSheetModalProvider>
         </QueryClientProvider>

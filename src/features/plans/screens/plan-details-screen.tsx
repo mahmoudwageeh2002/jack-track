@@ -17,6 +17,9 @@ import type { PlanDay } from '../domain/plan';
 import { weekdays } from '../domain/schedule';
 import { validateDays } from '../domain/validate-plan';
 import { useActivePlan, useExercises } from '../hooks/use-plans';
+import { requireOnline } from '@/features/offline/data/connectivity';
+import { offlineStorage } from '@/features/offline/data/offline-storage';
+import { cachedResource } from '@/features/offline/data/cached-resource';
 
 export function PlanDetailsScreen() {
   const { id, active: activeParam } = useLocalSearchParams<{ id: string; active?: string }>();
@@ -24,7 +27,7 @@ export function PlanDetailsScreen() {
   const client = useQueryClient();
   const active = useActivePlan();
   const selectedView = activeParam === 'true';
-  const query = useQuery({ queryKey: ['plan', user?.uid, id], enabled: !!user && !!id && !selectedView, queryFn: () => container.planRepository.getPlan(id) });
+  const query = useQuery({ queryKey: ['plan', user?.uid, id], enabled: !!user && !!id && !selectedView, networkMode: 'always', queryFn: () => cachedResource(user!.uid, 'plan:' + id, () => container.planRepository.getPlan(id), null) });
   const catalog = useExercises();
   const plan = selectedView ? active.data : query.data;
   const [changes, setChanges] = useState<Record<string, number>>({});
@@ -37,11 +40,13 @@ export function PlanDetailsScreen() {
     if (!plan || !user || saving) return;
     setSaving(true);
     try {
+      requireOnline();
       validateDays(days);
       const sourceId = selectedView ? active.data?.sourcePlanId ?? plan.id : plan.id;
       // Legacy selected copies are still editable even if the template is gone.
       if (selectedView) {
         await confirmed(setDoc(doc(requireDatabase(), 'users', user.uid, 'plans', plan.id), { days }, { merge: true }));
+        await offlineStorage.cache(user.uid, 'active-plan', { ...active.data, days });
       } else {
         await container.planRepository.selectPlan(user.uid, sourceId, days);
       }
