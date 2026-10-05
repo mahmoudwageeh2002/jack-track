@@ -12,6 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppTheme } from "@/hooks/use-app-theme";
 import { spacing } from "@/theme";
 import { BlurTargetContext } from "./blur-target-context";
+import { OfflineStatus } from '@/features/offline/components/offline-status';
 
 type Props = PropsWithChildren<{
   scroll?: boolean;
@@ -50,10 +51,11 @@ export function AppScreen({
               style={styles.scroll}
               contentContainerStyle={content}
             >
+              <OfflineStatus />
               {children}
             </ScrollView>
           ) : (
-            <View style={content}>{children}</View>
+            <View style={content}><OfflineStatus />{children}</View>
           )}
         </SafeAreaView>
       </BlurTargetView>

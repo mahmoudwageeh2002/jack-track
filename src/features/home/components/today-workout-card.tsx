@@ -1,3 +1,4 @@
+import { runOnlineAction } from '@/features/offline/data/connectivity';
 import { router } from 'expo-router';
 import { AppText } from '@/components/ui/app-text';
 import { GlassButton } from '@/components/ui/glass-button';
@@ -6,7 +7,7 @@ import type { UserPlan } from '@/features/plans/domain/plan';
 import { todaysPlanDay } from '@/features/plans/domain/schedule';
 
 export function TodayWorkoutCard({ plan, completedSessions }: { plan: UserPlan | null; completedSessions: number }) {
-  if (!plan) return <GlassButton label="Create my workout" onPress={() => router.push('/create-plan')} />;
+  if (!plan) return <GlassButton label="Create my workout" onPress={() => runOnlineAction('Creating a plan', () => router.push('/create-plan'))} />;
   const day = todaysPlanDay(plan, completedSessions);
   return <SurfaceCard style={{ gap: 14 }}>
     <AppText variant="caption" color="primary" weight="bold">YOUR PLAN · {plan.name}</AppText>

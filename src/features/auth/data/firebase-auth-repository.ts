@@ -9,6 +9,7 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 
 import { auth, db } from '@/core/config/firebase';
 import type { AuthRepository, RegisterInput } from '../domain/auth-repository';
+import { requireOnline } from '@/features/offline/data/connectivity';
 
 function requireAuth() {
   if (!auth) {
@@ -23,11 +24,13 @@ export class FirebaseAuthRepository implements AuthRepository {
   }
 
   async logIn(email: string, password: string) {
+    requireOnline();
     const result = await signInWithEmailAndPassword(requireAuth(), email.trim(), password);
     return result.user;
   }
 
   async register(input: RegisterInput) {
+    requireOnline();
     const result = await createUserWithEmailAndPassword(
       requireAuth(),
       input.email.trim(),
@@ -60,6 +63,7 @@ export class FirebaseAuthRepository implements AuthRepository {
   }
 
   resetPassword(email: string) {
+    requireOnline();
     return sendPasswordResetEmail(requireAuth(), email.trim());
   }
 }

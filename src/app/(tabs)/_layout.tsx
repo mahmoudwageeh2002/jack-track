@@ -15,7 +15,16 @@ export default function TabsLayout() {
       backgroundColor={colors.background}
       blurEffect="systemChromeMaterial"
     >
-      <NativeTabs.Trigger name="index">
+      <NativeTabs.Trigger
+        name="index"
+        listeners={{
+          tabPress: () => {
+            setTimeout(() => {
+              console.log("pressed");
+            }, 1000);
+          },
+        }}
+      >
         <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
           sf={{ default: "house", selected: "house.fill" }}

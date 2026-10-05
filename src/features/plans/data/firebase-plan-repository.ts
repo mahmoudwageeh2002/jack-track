@@ -4,6 +4,8 @@ import { confirmed, requireDatabase } from '@/core/utils/firestore-request';
 import type { Plan, PlanDay, UserPlan } from '../domain/plan';
 import type { PlanRepository } from '../domain/plan-repository';
 import { validateCustomPlan, validateDays } from '../domain/validate-plan';
+import { requireOnline } from '@/features/offline/data/connectivity';
+import { offlineStorage } from '@/features/offline/data/offline-storage';
 
 function toPlan(id: string, data: Record<string, unknown>): Plan {
   const createdAt = data.createdAt as { toDate?: () => Date } | undefined;
@@ -36,6 +38,7 @@ export class FirebasePlanRepository implements PlanRepository {
   }
 
   async selectPlan(userId: string, planId: string, days?: PlanDay[]) {
+    requireOnline();
     const database = requireDatabase();
     const plan = await this.getPlan(planId);
     if (!plan) throw new Error('This plan is no longer available.');
@@ -48,10 +51,12 @@ export class FirebasePlanRepository implements PlanRepository {
     batch.set(doc(database, 'users', userId, 'plans', plan.id), { ...selected, createdAt: serverTimestamp() });
     batch.set(doc(database, 'users', userId), { activePlanId: plan.id }, { merge: true });
     await confirmed(batch.commit());
+    await offlineStorage.cache(userId, 'active-plan', selected);
     return selected;
   }
 
   async createCustomPlan(userId: string, input: Omit<UserPlan, 'ownerId'>) {
+    requireOnline();
     validateCustomPlan(input);
     const database = requireDatabase();
     const plan: UserPlan = { ...input, ownerId: userId, isOfficial: false, isCustom: true };
@@ -61,6 +66,7 @@ export class FirebasePlanRepository implements PlanRepository {
     batch.set(doc(database, 'users', userId, 'plans', plan.id), data);
     batch.set(doc(database, 'users', userId), { activePlanId: plan.id }, { merge: true });
     await confirmed(batch.commit());
+    await offlineStorage.cache(userId, 'active-plan', plan);
     return plan;
   }
 }

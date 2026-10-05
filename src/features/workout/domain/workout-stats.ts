@@ -1,9 +1,8 @@
 import { differenceInCalendarDays, format, startOfWeek, subDays } from 'date-fns';
 import type { WorkoutSession } from './workout';
 
-export function workoutStats(sessions: WorkoutSession[], now = new Date()) {
-  const completed = sessions.filter((session) => session.status === 'completed' && session.completedAt);
-  const days = [...new Set(completed.map((session) => session.completedDay ?? format(session.completedAt!, 'yyyy-MM-dd')))].sort();
+export function streakStats(completedDays: string[], now = new Date()) {
+  const days = [...new Set(completedDays)].sort();
   const today = format(now, 'yyyy-MM-dd');
   const yesterday = format(subDays(now, 1), 'yyyy-MM-dd');
   let best = 0;
@@ -13,6 +12,12 @@ export function workoutStats(sessions: WorkoutSession[], now = new Date()) {
     best = Math.max(best, run);
   }
   const current = days.at(-1) === today || days.at(-1) === yesterday ? run : 0;
+  return { current, best, days };
+}
+
+export function workoutStats(sessions: WorkoutSession[], now = new Date()) {
+  const completed = sessions.filter((session) => session.status === 'completed' && session.completedAt);
+  const { current, best, days } = streakStats(completed.map((session) => session.completedDay ?? format(session.completedAt!, 'yyyy-MM-dd')), now);
   const weekStart = startOfWeek(now, { weekStartsOn: 1 });
   const weekly = completed.filter((session) => session.completedAt! >= weekStart && session.completedAt! <= now);
   const volume = weekly.reduce((sum, session) => sum + session.exercises.reduce((total, exercise) =>
