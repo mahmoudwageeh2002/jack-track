@@ -23,6 +23,8 @@ import { EditProfileSheet, MeasurementsSheet, ProfileAvatar } from '../component
 import { ProfileSheet } from '../components/profile-sheet';
 import { MeasurementHistory } from '../components/measurement-history';
 import { runOnlineAction, useOfflineState } from '@/features/offline/data/connectivity';
+import { NotificationSettings } from '@/features/notifications/components/notification-settings';
+import { useNotificationState } from '@/features/notifications/data/preferences';
 
 export function ProfileScreen() {
   useRefreshAccountOnFocus();
@@ -35,7 +37,12 @@ export function ProfileScreen() {
   const measurements = useMeasurements();
   const client = useQueryClient();
   const [leaving, setLeaving] = useState(false);
-  const [sheet, setSheet] = useState<'profile' | 'measurements' | 'settings' | null>(null);
+  const [sheet, setSheet] = useState<'profile' | 'measurements' | 'settings' | 'notifications' | null>(null);
+  // A replaced modal can finish dismissing after the next sheet has opened.
+  const closeSheet = (dismissed: NonNullable<typeof sheet>) => {
+    setSheet((current) => current === dismissed ? null : current);
+  };
+  const notificationsReady = useNotificationState((state) => state.ready && state.uid === user?.uid);
   const online = useOfflineState((state) => state.online);
   useEffect(() => useOfflineState.subscribe((state, previous) => {
     if (!state.online && previous.online && (sheet === 'profile' || sheet === 'measurements')) {
@@ -102,12 +109,14 @@ export function ProfileScreen() {
     {plans.data?.map((plan) => <PlanCard key={plan.id} plan={plan} />)}
     {plans.isSuccess && !plans.data.length && <AppText color="muted">Plans you create will appear here.</AppText>}
     <GlassButton label="Create a plan" onPress={() => runOnlineAction('Creating a plan', () => router.push('/create-plan'))} />
-    {sheet === 'profile' && <EditProfileSheet uid={user.uid} profile={displayedProfile} onClose={() => setSheet(null)} />}
-    {sheet === 'measurements' && <MeasurementsSheet uid={user.uid} profile={displayedProfile} onClose={() => setSheet(null)} />}
-    {sheet === 'settings' && <ProfileSheet title="Settings" busy={leaving} onClose={() => setSheet(null)}>
+    {sheet === 'profile' && <EditProfileSheet uid={user.uid} profile={displayedProfile} onClose={() => closeSheet('profile')} />}
+    {sheet === 'measurements' && <MeasurementsSheet uid={user.uid} profile={displayedProfile} onClose={() => closeSheet('measurements')} />}
+    {sheet === 'notifications' && <NotificationSettings uid={user.uid} onClose={() => closeSheet('notifications')} />}
+    {sheet === 'settings' && <ProfileSheet title="Settings" busy={leaving} onClose={() => closeSheet('settings')}>
       <AppText color="muted">Appearance</AppText>
       <GlassButton label={isDark ? 'Switch to light appearance' : 'Switch to dark appearance'} variant="secondary" disabled={leaving} onPress={() => Appearance.setColorScheme(isDark ? 'light' : 'dark')} />
       <AppText color="muted">Account</AppText>
+      <GlassButton label="Notifications" variant="secondary" disabled={leaving || !notificationsReady} onPress={() => setSheet('notifications')} />
       <GlassButton label="Log out" variant="danger" loading={leaving} onPress={logOut} />
     </ProfileSheet>}
   </AppScreen>;

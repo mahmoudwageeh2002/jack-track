@@ -31,6 +31,7 @@
     },
     "plugins": [
       "expo-router",
+      ["expo-notifications", { "color": "#0B9868", "defaultChannel": "quotes" }],
       [
         "expo-widgets",
         {

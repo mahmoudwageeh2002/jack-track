@@ -1,5 +1,7 @@
 # Live training data
 
+For quote push notifications, local reminders, Firebase deployment, and device credentials, see [Notifications setup](./NOTIFICATIONS.md).
+
 Home, Plans and Profile read authenticated Firestore data. Missing documents produce empty states; there are no bundled demo fallbacks.
 
 ## Populate the exercise library

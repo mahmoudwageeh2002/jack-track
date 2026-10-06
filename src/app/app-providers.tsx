@@ -10,6 +10,7 @@ import { AuthStateSync } from '@/features/auth/components/auth-state-sync';
 import { StreakWidgetSync } from '@/features/widgets/components/streak-widget-sync';
 import { WorkoutLiveActivitySync } from '@/features/widgets/components/workout-live-activity-sync';
 import { OfflineCoordinator } from '@/features/offline/components/offline-coordinator';
+import { NotificationCoordinator } from '@/features/notifications/components/notification-coordinator';
 import { queryClient } from './query-client';
 
 export function AppProviders({ children }: PropsWithChildren) {
@@ -20,6 +21,7 @@ export function AppProviders({ children }: PropsWithChildren) {
         <QueryClientProvider client={queryClient}>
           <StreakWidgetSync />
           <WorkoutLiveActivitySync />
+          <NotificationCoordinator />
           <BottomSheetModalProvider>
             {children}
             <OfflineCoordinator />

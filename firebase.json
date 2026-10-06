@@ -1,4 +1,5 @@
 {
+  "functions": [{ "source": "firebase/functions", "codebase": "notifications", "ignore": ["node_modules", "test", "*.log"], "predeploy": ["npm --prefix \"$RESOURCE_DIR\" run check"] }],
   "firestore": {
     "rules": "firebase/firestore.rules",
     "indexes": "firebase/firestore.indexes.json"
