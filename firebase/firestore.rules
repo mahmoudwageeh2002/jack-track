@@ -41,6 +41,19 @@ service cloud.firestore {
       }
     }
 
+    match /quotes/{quoteId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+    }
+
+    // Push tokens, installation secrets and delivery jobs are server-managed.
+    match /notificationQuoteDevices/{deviceId} {
+      allow read, write: if false;
+    }
+    match /notificationQuoteDeliveries/{deliveryId} {
+      allow read, write: if false;
+    }
+
     match /exercises/{exerciseId} {
       allow read: if signedIn();
       allow write: if isAdmin();

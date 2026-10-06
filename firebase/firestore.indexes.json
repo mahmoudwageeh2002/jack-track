@@ -1,5 +1,8 @@
 {
   "indexes": [
+    { "collectionGroup": "notificationQuoteDevices", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "enabled", "order": "ASCENDING" }, { "fieldPath": "nextQuoteAt", "order": "ASCENDING" }] },
+    { "collectionGroup": "notificationQuoteDeliveries", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "readyAt", "order": "ASCENDING" }] },
+    { "collectionGroup": "notificationQuoteDeliveries", "queryScope": "COLLECTION", "fields": [{ "fieldPath": "status", "order": "ASCENDING" }, { "fieldPath": "receiptDue", "order": "ASCENDING" }] },
     {
       "collectionGroup": "workoutSessions",
       "queryScope": "COLLECTION",
