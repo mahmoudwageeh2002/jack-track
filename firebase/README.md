@@ -45,6 +45,8 @@ Streaks count consecutive calendar days with at least one completed workout, usi
 
 Workout completion and its summary are saved in one transaction. The session ID is reused on retries so a timeout cannot double-count the workout. Reading existing workout history backfills summaries for older accounts. Measurements and their current user fields are saved atomically. Existing owner-only user/progress/workout rules cover these paths.
 
+New workouts prefill weights and reps from the current user's saved `users/{uid}/workoutSessions` history, matching the plan, workout day, exercise ID, and set number. The latest valid completed value for each set wins; skipped sets do not erase earlier values. Added exercises/sets also reuse matching history when available, while new sets without history start empty. Suggestions start incomplete and can be edited or removed. Existing drafts are preserved. Completing a workout saves its new values locally immediately and syncs to Firestore through the existing queue, so the next workout can use them offline; other devices use them after downloading the synced history. No new Firestore collection or migration is needed.
+
 Profile shows a paginated measurement history (newest first) and a graph with Weight/Height toggles based on all saved check-ins. Points are evenly spaced by check-in order so same-day entries stay distinct. Confirmed saves update both views immediately and refresh their Firestore queries. Previously overwritten daily measurements cannot be reconstructed; all new check-ins are preserved separately.
 
 ## Profile photos

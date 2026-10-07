@@ -6,15 +6,16 @@ import type { WorkoutSession } from '../domain/workout';
 import { offlineStorage } from '@/features/offline/data/offline-storage';
 import { useOfflineState } from '@/features/offline/data/connectivity';
 import { editWorkoutExercises, type WorkoutExerciseEdit } from '../domain/edit-workout';
+import { freshWorkoutSet, workoutDefaults } from '../domain/workout-defaults';
 
 type WorkoutState = {
   session: WorkoutSession | null;
   readyForUid: string | null;
   hydrate: (uid: string) => Promise<void>;
-  start: (userId: string, plan: UserPlan, day: PlanDay) => void;
+  start: (userId: string, plan: UserPlan, day: PlanDay, history: WorkoutSession[]) => void;
   updateSet: (exerciseId: string, setId: string, weight: number, reps: number) => void;
   toggleSet: (exerciseId: string, setId: string) => void;
-  editExercises: (sessionId: string, edits: WorkoutExerciseEdit[], availableExerciseIds: string[]) => void;
+  editExercises: (sessionId: string, edits: WorkoutExerciseEdit[], availableExerciseIds: string[], history: WorkoutSession[]) => void;
   reset: () => void;
 };
 
@@ -32,30 +33,31 @@ export const useWorkoutStore = create<WorkoutState>((set) => ({
       if (generation === hydration) useOfflineState.setState({ storageError: 'Could not load saved workouts. Try reopening the app before starting a new workout.' });
     }
   },
-  start: (userId, plan, day) => set((state) => {
+  start: (userId, plan, day, history) => set((state) => {
     if (state.readyForUid !== userId) return state;
     if (state.session?.userId === userId && state.session.planId === plan.id && state.session.planDayId === day.id) return state;
+    const defaults = workoutDefaults(userId, plan.id, day.id, history);
     return { session: {
       id: doc(collection(requireDatabase(), 'users', userId, 'workoutSessions')).id,
       userId, planId: plan.id, planDayId: day.id, startedAt: new Date(), status: 'in_progress',
       exercises: day.exercises.map((move) => ({
         exerciseId: move.exerciseId,
-        sets: Array.from({ length: move.sets }, (_, index) => ({ id: move.exerciseId + '-' + index, setNumber: index + 1, weight: 0, reps: 0, completed: false })),
+        sets: Array.from({ length: move.sets }, (_, index) => freshWorkoutSet(move.exerciseId, index, defaults)),
       })),
     } };
   }),
   updateSet: (exerciseId, setId, weight, reps) => set((state) => ({
     session: state.session ? { ...state.session, exercises: state.session.exercises.map((exercise) => exercise.exerciseId === exerciseId ? {
-      ...exercise, sets: exercise.sets.map((item) => item.id === setId ? { ...item, weight, reps, completed: true } : item),
+      ...exercise, sets: exercise.sets.map((item) => item.id === setId ? { ...item, weight, reps, completed: true, prefilledFromHistory: false } : item),
     } : exercise) } : null,
   })),
   toggleSet: (exerciseId, setId) => set((state) => ({
     session: state.session ? { ...state.session, exercises: state.session.exercises.map((exercise) => exercise.exerciseId === exerciseId ? {
-      ...exercise, sets: exercise.sets.map((item) => item.id === setId ? { ...item, completed: !item.completed } : item),
+      ...exercise, sets: exercise.sets.map((item) => item.id === setId ? { ...item, completed: !item.completed, prefilledFromHistory: false } : item),
     } : exercise) } : null,
   })),
-  editExercises: (sessionId, edits, availableExerciseIds) => set((state) => ({
-    session: editWorkoutExercises(state.session, sessionId, edits, availableExerciseIds),
+  editExercises: (sessionId, edits, availableExerciseIds, history) => set((state) => ({
+    session: editWorkoutExercises(state.session, sessionId, edits, availableExerciseIds, history),
   })),
   reset: () => { hydration++; set({ session: null, readyForUid: null }); },
 }));

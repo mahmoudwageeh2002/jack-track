@@ -13,7 +13,7 @@ export function SetRow({ item, active, onEdit, onToggle }: Props) {
   return (
     <View style={[styles.row, { backgroundColor: active ? colors.softMint : colors.surfaceMuted }]}>
       <AppText variant="label" color="muted" weight="semibold">{item.setNumber}</AppText>
-      <Metric value={item.weight ? `${item.weight} kg` : '— kg'} label="Weight" />
+      <Metric value={item.weight || item.reps ? `${item.weight} kg` : '— kg'} label="Weight" />
       <Metric value={item.reps ? `${item.reps} reps` : '— reps'} label="Reps" />
       <Pressable
         accessibilityLabel={item.completed ? 'Mark set incomplete' : 'Edit set'}

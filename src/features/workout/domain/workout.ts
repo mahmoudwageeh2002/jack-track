@@ -4,6 +4,8 @@ export type WorkoutSet = {
   reps: number;
   weight: number;
   completed: boolean;
+  /** Previous-session suggestion; not yet recorded in this workout. */
+  prefilledFromHistory?: boolean;
   estimatedOneRepMax?: number;
 };
 
