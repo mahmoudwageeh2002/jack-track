@@ -41,8 +41,8 @@ export function WorkoutSessionScreen() {
   const draftDay = session && session.userId === user?.uid && session.planId === plan?.id ? plan?.days.find((item) => item.id === session.planDayId) : null;
   const day = draftDay ?? (plan ? todaysPlanDay(plan, total) : null);
   useEffect(() => {
-    if (!saving && canTrain && user && readyForUid === user.uid && plan && day && history.isSuccess && catalog.isSuccess) start(user.uid, plan, day);
-  }, [user, plan, day, history.isSuccess, catalog.isSuccess, readyForUid, saving, canTrain, start]);
+    if (!saving && canTrain && user && readyForUid === user.uid && plan && day && history.isSuccess && catalog.isSuccess) start(user.uid, plan, day, history.data);
+  }, [user, plan, day, history.isSuccess, history.data, catalog.isSuccess, readyForUid, saving, canTrain, start]);
   useEffect(() => {
     const timer = setInterval(() => setNow(Date.now()), 1000);
     return () => clearInterval(timer);
@@ -82,6 +82,7 @@ export function WorkoutSessionScreen() {
     {ownedSession && day && <>
       <AppText variant="title" weight="bold">{day.name}</AppText>
       <AppText color="primary">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, '0')} elapsed · {completed}/{setCount} sets</AppText>
+      {ownedSession.exercises.some((exercise) => exercise.sets.some((set) => set.prefilledFromHistory)) && <AppText variant="small" color="muted">Your last saved weights and reps are filled in. Edit and save each set as you complete it.</AppText>}
       <GlassButton label="Edit workout" variant="secondary" disabled={saving} onPress={() => setEditingWorkout(true)} />
       <View style={{ gap: 16 }} pointerEvents={saving ? 'none' : 'auto'}>
         {ownedSession.exercises.map((exercise) => <SurfaceCard key={exercise.exerciseId} style={{ gap: 10 }}>
@@ -94,7 +95,7 @@ export function WorkoutSessionScreen() {
     <EditSetModal key={editing?.set.id ?? 'closed'} item={editing?.set ?? null} exerciseName={editing?.name} onClose={() => setEditing(null)} onSave={(weight, reps) => { if (editing) updateSet(editing.exerciseId, editing.set.id, weight, reps); }} />
     {editingWorkout && ownedSession && <EditWorkoutModal key={ownedSession.id} session={ownedSession} catalog={catalog.data ?? []} onClose={() => setEditingWorkout(false)} onSave={(edits) => {
       try {
-        editExercises(ownedSession.id, edits, (catalog.data ?? []).map((exercise) => exercise.id));
+        editExercises(ownedSession.id, edits, (catalog.data ?? []).map((exercise) => exercise.id), history.data ?? []);
         setEditingWorkout(false);
       } catch (error) {
         Alert.alert('Could not update workout', error instanceof Error ? error.message : 'Please try again.');

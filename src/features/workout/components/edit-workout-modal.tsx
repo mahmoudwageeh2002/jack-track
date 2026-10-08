@@ -22,6 +22,7 @@ import {
   type WorkoutExerciseEdit,
 } from "../domain/edit-workout";
 import type { WorkoutSession } from "../domain/workout";
+import { hasRecordedSetValues } from "../domain/workout-defaults";
 import { WorkoutExerciseEditorList } from "./workout-exercise-editor-list";
 
 function confirmEdit(
@@ -104,7 +105,7 @@ export function EditWorkoutModal({
     if (
       original
         .get(exerciseId)
-        ?.sets.some((set) => set.completed || set.reps > 0 || set.weight > 0)
+        ?.sets.some(hasRecordedSetValues)
     ) {
       confirmEdit(
         "Remove recorded sets?",

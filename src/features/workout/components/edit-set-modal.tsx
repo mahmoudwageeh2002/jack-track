@@ -21,7 +21,7 @@ type ContentProps = Omit<Props, 'item'> & { item: WorkoutSet };
 
 function EditSetContent({ item, exerciseName, onClose, onSave }: ContentProps) {
   const { colors } = useAppTheme();
-  const [weight, setWeight] = useState(item.weight ? String(item.weight) : '');
+  const [weight, setWeight] = useState(item.weight || item.reps ? String(item.weight) : '');
   const [reps, setReps] = useState(item.reps ? String(item.reps) : '');
   return (
     <Modal visible animationType="slide" presentationStyle="pageSheet" onRequestClose={onClose}>
