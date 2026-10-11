@@ -4,16 +4,18 @@ import {
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
-} from 'firebase/auth';
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+} from "firebase/auth";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 
-import { auth, db } from '@/core/config/firebase';
-import type { AuthRepository, RegisterInput } from '../domain/auth-repository';
-import { requireOnline } from '@/features/offline/data/connectivity';
+import { auth, db } from "@/core/config/firebase";
+import { requireOnline } from "@/features/offline/data/connectivity";
+import type { AuthRepository, RegisterInput } from "../domain/auth-repository";
 
 function requireAuth() {
   if (!auth) {
-    throw new Error('Firebase is not configured. Add the EXPO_PUBLIC_FIREBASE_* values.');
+    throw new Error(
+      "Firebase is not configured. Add the EXPO_PUBLIC_FIREBASE_* values.",
+    );
   }
   return auth;
 }
@@ -25,7 +27,11 @@ export class FirebaseAuthRepository implements AuthRepository {
 
   async logIn(email: string, password: string) {
     requireOnline();
-    const result = await signInWithEmailAndPassword(requireAuth(), email.trim(), password);
+    const result = await signInWithEmailAndPassword(
+      requireAuth(),
+      email.trim(),
+      password,
+    );
     return result.user;
   }
 
@@ -41,17 +47,22 @@ export class FirebaseAuthRepository implements AuthRepository {
     // writes can stay pending while the client is offline or cannot reach the
     // database, so they must not prevent the app from leaving this screen.
     void updateProfile(result.user, { displayName: input.name.trim() }).catch(
-      (error: unknown) => console.warn('Could not update the auth profile.', error),
+      (error: unknown) =>
+        console.warn("Could not update the auth profile.", error),
     );
 
     if (db) {
-      void setDoc(doc(db, 'users', result.user.uid), {
-        displayName: input.name.trim(),
-        email: input.email.trim().toLowerCase(),
-        role: 'user',
-        createdAt: serverTimestamp(),
-      }, { merge: true }).catch((error: unknown) => {
-        console.warn('Could not sync the user profile to Firestore.', error);
+      void setDoc(
+        doc(db, "users", result.user.uid),
+        {
+          displayName: input.name.trim(),
+          email: input.email.trim().toLowerCase(),
+          role: "user",
+          createdAt: serverTimestamp(),
+        },
+        { merge: true },
+      ).catch((error: unknown) => {
+        console.warn("Could not sync the user profile to Firestore.", error);
       });
     }
 
