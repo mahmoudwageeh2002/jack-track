@@ -1,7 +1,7 @@
-import { useEffect } from 'react';
-import { AppState } from 'react-native';
-import { useWorkoutHistory } from '@/features/workout/hooks/use-workout-history';
-import { useAppSelector } from '@/core/store';
+import { useAppSelector } from "@/core/store";
+import { useWorkoutHistory } from "@/features/workout/hooks/use-workout-history";
+import { useEffect } from "react";
+import { AppState } from "react-native";
 
 export function StreakWidgetSync() {
   const uid = useAppSelector((state) => state.auth.user?.uid);
@@ -9,9 +9,9 @@ export function StreakWidgetSync() {
 
   useEffect(() => {
     if (!uid) return;
-    const subscription = AppState.addEventListener('change', (state) => {
+    const subscription = AppState.addEventListener("change", (state) => {
       // Refresh after time-zone changes, midnight, or workouts on another device.
-      if (state === 'active') void refetch();
+      if (state === "active") void refetch();
     });
     return () => subscription.remove();
   }, [uid, refetch]);
