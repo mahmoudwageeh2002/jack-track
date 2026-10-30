@@ -1,1 +1,3 @@
-export function WorkoutLiveActivitySync() { return null; }
+export function WorkoutLiveActivitySync() {
+  return null;
+}
