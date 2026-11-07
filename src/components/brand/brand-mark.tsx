@@ -1,4 +1,4 @@
-import { Image, StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from "react-native";
 
 type Props = { size?: number };
 
@@ -8,11 +8,11 @@ export function BrandMark({ size = 72 }: Props) {
       <Image
         accessibilityLabel="Jack Track"
         resizeMode="contain"
-        source={require('../../../icon.png')}
+        source={require("../../../icon.png")}
         style={styles.image}
       />
     </View>
   );
 }
 
-const styles = StyleSheet.create({ image: { width: '100%', height: '100%' } });
+const styles = StyleSheet.create({ image: { width: "100%", height: "100%" } });
