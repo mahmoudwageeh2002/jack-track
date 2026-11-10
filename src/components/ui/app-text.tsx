@@ -1,16 +1,25 @@
-import type { PropsWithChildren } from 'react';
-import { Text, type TextProps, type TextStyle } from 'react-native';
+import type { PropsWithChildren } from "react";
+import { Text, type TextProps, type TextStyle } from "react-native";
 
-import { fontFamily, fontSize } from '@/theme';
-import { useAppTheme } from '@/hooks/use-app-theme';
+import { useAppTheme } from "@/hooks/use-app-theme";
+import { fontFamily, fontSize } from "@/theme";
 
-type Variant = 'caption' | 'small' | 'label' | 'body' | 'button' | 'subtitle' | 'title' | 'hero';
+type Variant =
+  | "caption"
+  | "small"
+  | "label"
+  | "body"
+  | "button"
+  | "subtitle"
+  | "title"
+  | "hero";
 
-type Props = TextProps & PropsWithChildren<{
-  variant?: Variant;
-  color?: 'default' | 'muted' | 'primary' | 'inverse' | 'danger';
-  weight?: 'regular' | 'medium' | 'semibold' | 'bold';
-}>;
+type Props = TextProps &
+  PropsWithChildren<{
+    variant?: Variant;
+    color?: "default" | "muted" | "primary" | "inverse" | "danger";
+    weight?: "regular" | "medium" | "semibold" | "bold";
+  }>;
 
 const lineHeights: Record<Variant, number> = {
   caption: 13,
@@ -25,9 +34,9 @@ const lineHeights: Record<Variant, number> = {
 
 export function AppText({
   children,
-  variant = 'body',
-  color = 'default',
-  weight = 'regular',
+  variant = "body",
+  color = "default",
+  weight = "regular",
   style,
   ...props
 }: Props) {
@@ -46,5 +55,9 @@ export function AppText({
     lineHeight: lineHeights[variant],
   };
 
-  return <Text {...props} style={[textStyle, style]}>{children}</Text>;
+  return (
+    <Text {...props} style={[textStyle, style]}>
+      {children}
+    </Text>
+  );
 }
