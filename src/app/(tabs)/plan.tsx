@@ -1,1 +1,1 @@
-export { PlansScreen as default } from '@/features/plans/screens/plans-screen';
+export { PlansScreen as default } from "@/features/plans/screens/plans-screen";
