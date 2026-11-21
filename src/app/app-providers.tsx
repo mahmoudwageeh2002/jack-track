@@ -1,17 +1,17 @@
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { QueryClientProvider } from '@tanstack/react-query';
-import type { PropsWithChildren } from 'react';
-import { Provider as ReduxProvider } from 'react-redux';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { QueryClientProvider } from "@tanstack/react-query";
+import type { PropsWithChildren } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Provider as ReduxProvider } from "react-redux";
 
-import { AppToast } from '@/components/feedback/app-toast';
-import { store } from '@/core/store';
-import { AuthStateSync } from '@/features/auth/components/auth-state-sync';
-import { StreakWidgetSync } from '@/features/widgets/components/streak-widget-sync';
-import { WorkoutLiveActivitySync } from '@/features/widgets/components/workout-live-activity-sync';
-import { OfflineCoordinator } from '@/features/offline/components/offline-coordinator';
-import { NotificationCoordinator } from '@/features/notifications/components/notification-coordinator';
-import { queryClient } from './query-client';
+import { AppToast } from "@/components/feedback/app-toast";
+import { store } from "@/core/store";
+import { AuthStateSync } from "@/features/auth/components/auth-state-sync";
+import { NotificationCoordinator } from "@/features/notifications/components/notification-coordinator";
+import { OfflineCoordinator } from "@/features/offline/components/offline-coordinator";
+import { StreakWidgetSync } from "@/features/widgets/components/streak-widget-sync";
+import { WorkoutLiveActivitySync } from "@/features/widgets/components/workout-live-activity-sync";
+import { queryClient } from "./query-client";
 
 export function AppProviders({ children }: PropsWithChildren) {
   return (
