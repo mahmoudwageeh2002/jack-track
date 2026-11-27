@@ -1,1 +1,1 @@
-export { WorkoutSessionScreen as default } from '@/features/workout/screens/workout-session-screen';
+export { WorkoutSessionScreen as default } from "@/features/workout/screens/workout-session-screen";
